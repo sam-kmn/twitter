@@ -28,13 +28,13 @@ export async function GET(request: NextRequest) {
       { tweets: splitedTweets[splitedTweets.length] },
       { status: 200 }
     )
-
-  return NextResponse.json(
-    {
-      tweets: splitedTweets[page],
-      nextPage: page + 1 > splitedTweets.length ? null : page + 1,
-      pages: splitedTweets.length,
-    },
-    { status: 200 }
-  )
+  return NextResponse.json([...splitedTweets[page]], { status: 200 })
+  // return NextResponse.json(
+  //   {
+  //     tweets: splitedTweets[page],
+  //     nextPage: page + 1 > splitedTweets.length ? null : page + 1,
+  //     pages: splitedTweets.length,
+  //   },
+  //   { status: 200 }
+  // )
 }

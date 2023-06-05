@@ -1,6 +1,6 @@
 import "./globals.css"
 import "bootstrap-icons/font/bootstrap-icons.css"
-import { Poppins } from "next/font/google"
+// import { Poppins } from "next/font/google"
 import { ClerkProvider } from "@clerk/nextjs"
 import Sidebar from "@/components/Sidebar"
 import NewToTwitter from "@/components/NewToTwitter"
@@ -8,10 +8,10 @@ import NewToTwitter from "@/components/NewToTwitter"
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs"
 import SignBar from "@/components/SignBar"
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: "400",
-})
+// const poppins = Poppins({
+//   subsets: ["latin"],
+//   weight: "400",
+// })
 
 export default function RootLayout({
   children,
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={poppins.className}>
+        <body>
           <main className="flex justify-center overflow-hidden">
             <Sidebar />
 
