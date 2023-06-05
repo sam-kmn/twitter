@@ -5,12 +5,10 @@ export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("page")
   if (!query || query == null)
     return NextResponse.json({ message: "Invalid params" }, { status: 400 })
-  console.log({ query })
 
   const page = parseInt(query)
-  if (!page || page < 0)
+  if (page < 0)
     return NextResponse.json({ message: "Invalid params" }, { status: 400 })
-  console.log({ page })
 
   const tweets = await prisma.tweets.findMany({
     orderBy: {

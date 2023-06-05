@@ -1,6 +1,5 @@
 import { SignedOut } from "@clerk/nextjs"
 import SignBar from "@/components/SignBar"
-import Post from "@/components/Post"
 import AddTweet from "@/components/AddTweet"
 import Header from "@/components/Header"
 
@@ -20,6 +19,7 @@ export const metadata = {
 export default async function Home() {
   const data = await getTweets()
 
+  // {data.length && data.map((tweet: any) => <Post key={tweet.id} />)}
   return (
     <>
       <Header title={metadata.title} />
@@ -27,7 +27,6 @@ export default async function Home() {
         <SignBar />
       </SignedOut>
       <AddTweet />
-      {data.length && data.map((tweet: any) => <Post key={tweet.id} />)}
     </>
   )
 }
