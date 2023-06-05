@@ -9,9 +9,9 @@ const Sidebar = () => {
       <nav className="mx-auto w-min flex flex-col gap-8 items-start text-white">
         <i className="bi bi-twitter text-3xl"></i>
         <div className="flex items-center gap-4">
-          <i className="bi bi-compass text-3xl"></i>
+          <i className="bi bi-house-fill text-3xl"></i>
           <Link href={"/"} className="hidden sm:block text-xl  tracking-wider">
-            Explore
+            Home
           </Link>
         </div>
 
