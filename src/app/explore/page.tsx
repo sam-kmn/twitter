@@ -1,9 +1,8 @@
 "use client"
 import Header from "@/components/Header"
-import useSWR from "swr"
-import { useState } from "react"
 import Tweet from "@/components/Tweet"
 import useSWRInfinite from "swr/infinite"
+import Intersection from "@/components/Intersection"
 
 // export const metadata = {
 //   title: "Explore",
@@ -22,20 +21,23 @@ export default function Page() {
   if (!data) return "loading"
 
   return (
-    <>
+    <div className="flex-1">
       <Header title={"explore"} />
-      {data.map((tweets, index) => {
-        console.log({ tweets }, { size })
-        return tweets.map((tweet: any) => (
-          <Tweet key={tweet.id} tweet={tweet} />
-        ))
-      })}
-      <button
-        className="m-10 mx-auto px-6 py-2 bg-blue-500 w-min rounded-full whitespace-nowrap"
-        onClick={() => setSize(size + 1)}
-      >
-        Load more
-      </button>
-    </>
+
+      <div className="flex flex-col overflow-y-scroll">
+        {data.map((tweets) =>
+          tweets.map((tweet: any) => <Tweet key={tweet.id} tweet={tweet} />)
+        )}
+      </div>
+
+      <Intersection callback={() => setSize(size + 1)}>
+        <button
+          className="m-10 mx-auto px-6 py-2 bg-blue-500 w-min rounded-full whitespace-nowrap"
+          onClick={() => setSize(size + 1)}
+        >
+          Load more
+        </button>
+      </Intersection>
+    </div>
   )
 }

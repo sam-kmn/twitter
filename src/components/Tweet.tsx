@@ -11,7 +11,7 @@ export default function Tweet({ tweet }: { tweet: any }) {
   const user = users.find((user) => user.userId === tweet.userId)
   if (user)
     return (
-      <div className="flex items-center gap-4 p-5 border-b border-gray-700">
+      <div className="flex items-center gap-4 p-7 border-b border-gray-700 ">
         <img
           src={user.img}
           className="w-16 aspect-square rounded-full"
