@@ -1,8 +1,9 @@
 "use client"
 import Header from "@/components/Header"
-import Tweet from "@/components/Tweet"
 import useSWRInfinite from "swr/infinite"
 import Intersection from "@/components/Intersection"
+import AddTweet from "@/components/AddTweet"
+import Tweet from "@/components/Tweet"
 
 // export const metadata = {
 //   title: "Explore",
@@ -15,7 +16,7 @@ const getKey = (pageIndex: number, previousPageData: any) => {
 }
 
 export default function Page() {
-  const { data, size, setSize } = useSWRInfinite(getKey, (...args) =>
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, (...args) =>
     fetch(...args).then((res) => res.json())
   )
   if (!data) return "loading"
@@ -24,10 +25,14 @@ export default function Page() {
     <div className="flex-1">
       <Header title={"explore"} />
 
+      <AddTweet />
       <div className="flex flex-col overflow-y-scroll">
-        {data.map((tweets) =>
-          tweets.map((tweet: any) => <Tweet key={tweet.id} tweet={tweet} />)
-        )}
+        {isLoading && <div>Loading</div>}
+        {data.map((tweets) => {
+          return tweets.map((tweet: any) => (
+            <Tweet key={tweet.id} tweet={tweet} />
+          ))
+        })}
       </div>
 
       <Intersection callback={() => setSize(size + 1)}>
