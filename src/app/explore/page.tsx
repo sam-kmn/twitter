@@ -16,16 +16,45 @@ const getKey = (pageIndex: number, previousPageData: any) => {
 }
 
 export default function Page() {
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, (...args) =>
-    fetch(...args).then((res) => res.json())
+  const { data, size, setSize, isLoading, mutate } = useSWRInfinite(
+    getKey,
+    (...args) => fetch(...args).then((res) => res.json())
   )
   if (!data) return "loading"
+
+  const mutateData = () => {
+    mutate([
+      ...data,
+      [
+        {
+          id: "648f2e0s46a3d3f5a120af4b",
+          userId: "user_2RNoan3QaNzDtEuxSUakVl9tqin",
+          text: "Mutated data",
+          image: null,
+          likes: [],
+          createdAt: "2023-06-18T15:09:01.751Z",
+          updatedAt: "2023-06-18T15:09:01.751Z",
+          user: {
+            username: "samkmn",
+            firstName: "Samuel",
+            lastName: "Kaminski",
+            imageUrl:
+              "https://img.clerk.com/eyJ0eXBlIjoiZGVmYXVsdCIsImlpZCI6Imluc18yUU5kMEI3VU51R3hSaXkwOXQ3QlVOUGs5blEiLCJyaWQiOiJ1c2VyXzJSTm9hbjNRYU56RHRFdXhTVWFrVmw5dHFpbiIsImluaXRpYWxzIjoiU0sifQ",
+          },
+        },
+      ],
+    ])
+    console.log("mutateData")
+  }
 
   return (
     <div className="flex-1">
       <Header title={"explore"} />
 
       <AddTweet />
+
+      <button onClick={mutateData}>Mutate data</button>
+
       <div className="flex flex-col overflow-y-scroll">
         {isLoading && <div>Loading</div>}
         {data.map((tweets) => {
