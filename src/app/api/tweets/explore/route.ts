@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
   // console.log(tweets)
 
   const splitedTweets = []
-  const chunkSize = 2
+  const chunkSize = 4
   for (let i = 0; i < tweets.length; i += chunkSize) {
     const chunk = tweets.slice(i, i + chunkSize)
     splitedTweets.push(chunk)

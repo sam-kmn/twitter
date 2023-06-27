@@ -27,6 +27,24 @@ export default function Tweet({ tweet }: { tweet: TweetsWithUser }) {
             <p className="text-gray-400">{tweet.user.username} • 1h ago</p>
           </div>
           <p className="">{tweet.text}</p>
+
+          <div className="flex gap-10 pt-2 items-center">
+            <div>
+              <i className="bi bi-chat mr-2" />0
+            </div>
+
+            <div>
+              <i className="bi bi-heart mr-2" />0
+            </div>
+
+            <div>
+              <i className="bi bi-share mr-2" />0
+            </div>
+
+            <div>
+              <i className="bi bi-graph-up mr-2" />0
+            </div>
+          </div>
         </div>
       </div>
     )

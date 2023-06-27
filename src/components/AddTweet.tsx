@@ -1,32 +1,47 @@
 "use client"
+import { useTweets } from "@/lib/store"
 // import { postTweet } from "@/lib/actions"
-import { useAuth } from "@clerk/nextjs"
+import { useUser } from "@clerk/nextjs"
 import { FormEvent, useState } from "react"
 
 export default function AddTweet() {
+  const { user } = useUser()
+  const addTweet = useTweets((store) => store.addTweet)
   const [data, setData] = useState({
     text: "",
   })
-  const { userId } = useAuth()
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!userId) return
+    if (!user?.id) return
     const response = await fetch("/api/tweets/", {
       method: "POST",
       body: JSON.stringify({
         ...data,
-        userId,
+        userId: user.id,
       }),
     })
     setData({ ...data, text: "" })
-    const tweet = await response.json()
-    console.log(tweet)
+    const responseData = await response.json()
+    console.log(responseData)
+    addTweet({
+      ...responseData.tweet,
+      user: {
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        imageUrl: user.imageUrl,
+      },
+    })
   }
 
   return (
-    <div className="w-full flex gap-2 p-4 border-y border-gray-600">
-      <img src="https://placehold.co/80x80" alt="" className="w-14 " />
+    <div className="w-full flex items-center gap-2 p-4 border-y border-gray-600">
+      <img
+        src={user?.imageUrl}
+        alt=""
+        className="w-14 h-14 object-cover rounded-full "
+      />
       <form
         onSubmit={(e) => handleSubmit(e)}
         className="flex-1 p-2 flex flex-col divide-y divide-gray-700"

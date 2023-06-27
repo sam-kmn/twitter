@@ -5,10 +5,10 @@ export function useIntersection(ref: RefObject<Element>) {
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setIsIntersecting(true)
-        // console.log("Intersection")
-      }
+      setIsIntersecting(entry.isIntersecting)
+      // if (entry.isIntersecting) {
+      //   setIsIntersecting(true)
+      // } else setIsIntersecting(false)
     })
 
     ref.current && observer.observe(ref.current)
@@ -16,7 +16,7 @@ export function useIntersection(ref: RefObject<Element>) {
     return () => {
       observer.disconnect()
     }
-  }, [])
+  }, [ref])
 
   return isIntersecting
 }

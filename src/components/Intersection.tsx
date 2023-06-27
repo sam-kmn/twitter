@@ -14,7 +14,7 @@ const Intersection = ({ callback, children }: Props) => {
 
   useEffect(() => {
     if (isInViewport) {
-      console.count("Intersection/Fetching")
+      console.log("Intersection/Fetching", isInViewport)
       callback()
     }
   }, [isInViewport])
