@@ -8,11 +8,6 @@ import NewToTwitter from "@/components/NewToTwitter"
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs"
 import SignBar from "@/components/SignBar"
 
-// const poppins = Poppins({
-//   subsets: ["latin"],
-//   weight: "400",
-// })
-
 export default function RootLayout({
   children,
 }: {

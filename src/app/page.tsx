@@ -1,16 +1,9 @@
 "use client"
 import Header from "@/components/Header"
-import useSWRInfinite from "swr/infinite"
 import Intersection from "@/components/Intersection"
 import AddTweet from "@/components/AddTweet"
 import Tweet from "@/components/Tweet"
 import { useTweets } from "@/lib/store"
-import { useEffect } from "react"
-
-const getKey = (pageIndex: number, previousPageData: any) => {
-  if (previousPageData && !previousPageData.length) return null // reached the end
-  return `/api/tweets/explore?page=${pageIndex}` // SWR key
-}
 
 export default function Page() {
   const store = useTweets()
@@ -18,7 +11,6 @@ export default function Page() {
   return (
     <div className="flex-1">
       <Header title={"Home"} />
-
       <AddTweet />
 
       <div className="flex flex-col overflow-y-scroll">

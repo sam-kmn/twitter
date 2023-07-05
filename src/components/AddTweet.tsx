@@ -1,6 +1,5 @@
 "use client"
 import { useTweets } from "@/lib/store"
-// import { postTweet } from "@/lib/actions"
 import { useUser } from "@clerk/nextjs"
 import { FormEvent, useState } from "react"
 
@@ -34,42 +33,43 @@ export default function AddTweet() {
       },
     })
   }
-
-  return (
-    <div className="w-full flex items-center gap-2 p-4 border-y border-gray-600">
-      <img
-        src={user?.imageUrl}
-        alt=""
-        className="w-14 h-14 object-cover rounded-full "
-      />
-      <form
-        onSubmit={(e) => handleSubmit(e)}
-        className="flex-1 p-2 flex flex-col divide-y divide-gray-700"
-      >
-        <input
-          type="text"
-          value={data.text}
-          onChange={(event) =>
-            setData({ ...data, text: event.currentTarget.value })
-          }
-          placeholder="What is happening?!"
-          className="text-lg text-white bg-transparent placeholder:text-gray-500 p-5 outline-none"
+  if (!user) return null
+  else
+    return (
+      <div className="w-full flex items-center gap-2 p-4 border-y border-gray-600">
+        <img
+          src={user?.imageUrl}
+          alt=""
+          className="w-14 h-14 object-cover rounded-full "
         />
-        <nav className="w-full flex justify-between items-center p-4">
-          <div>
+        <form
+          onSubmit={(e) => handleSubmit(e)}
+          className="flex-1 p-2 flex flex-col divide-y divide-gray-700"
+        >
+          <input
+            type="text"
+            value={data.text}
+            onChange={(event) =>
+              setData({ ...data, text: event.currentTarget.value })
+            }
+            placeholder="What is happening?!"
+            className="text-lg text-white bg-transparent placeholder:text-gray-500 p-5 outline-none"
+          />
+          <nav className="w-full flex justify-between items-center p-4">
+            <div>
+              <button
+                type="button"
+                className="bi bi-image text-blue-500"
+              ></button>
+            </div>
             <button
-              type="button"
-              className="bi bi-image text-blue-500"
-            ></button>
-          </div>
-          <button
-            type="submit"
-            className="text-lg px-6 py-1 bg-blue-500 rounded-full"
-          >
-            Tweet
-          </button>
-        </nav>
-      </form>
-    </div>
-  )
+              type="submit"
+              className="text-lg px-6 py-1 bg-blue-500 rounded-full"
+            >
+              Tweet
+            </button>
+          </nav>
+        </form>
+      </div>
+    )
 }
