@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   if (page < 0)
     return NextResponse.json({ message: "Invalid params" }, { status: 400 })
 
-  console.log("GET /api/tweets/explore?page=", page)
+  // console.log("GET /api/tweets/explore?page=", page)
 
   const rawTweets = await prisma.tweets.findMany({
     orderBy: {
