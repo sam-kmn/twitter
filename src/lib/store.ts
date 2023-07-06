@@ -38,18 +38,22 @@ export const useTweets = create<TweetStore>((set, get) => ({
   },
 
   fetchPage: async () => {
-    if (get().lastPage != undefined && get().nextPage > get().lastPage)
+    const lastPage = get().lastPage
+    const nextPage = get().nextPage
+
+    if (lastPage !== undefined && nextPage > lastPage)
       return console.warn("You are already at last page!")
+
     try {
       set({ isLoading: true })
       const resposne = await (
-        await fetch(`/api/tweets/explore?page=${get().nextPage}`)
+        await fetch(`/api/tweets/explore?page=${nextPage}`)
       ).json()
 
       // console.log("store.fetchPage() ", get().nextPage)
       set({
         data: [...get().data, resposne.payload],
-        nextPage: get().nextPage + 1,
+        nextPage: nextPage + 1,
         lastPage: resposne.lastPage,
       })
     } catch (error) {
