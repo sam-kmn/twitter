@@ -12,6 +12,8 @@ export async function GET(request: NextRequest) {
   if (page < 0)
     return NextResponse.json({ message: "Invalid params" }, { status: 400 })
 
+  console.log("GET /api/tweets/explore?page=", page)
+
   const rawTweets = await prisma.tweets.findMany({
     orderBy: {
       likes: "desc",
@@ -21,9 +23,7 @@ export async function GET(request: NextRequest) {
 
   const tweets = await Promise.all(
     rawTweets.map(async (tweet): Promise<Tweets> => {
-      // const user = await clerkClient.users.getUser(tweet.userId)
       const user = users.find((user) => user.id === tweet.userId)
-      // console.log(user)
       if (!user) return tweet
       const newTweet = {
         ...tweet,
@@ -35,33 +35,24 @@ export async function GET(request: NextRequest) {
         },
       }
 
-      // console.log({ tweet })
-      // console.log({ newTweet })
       return newTweet
     })
   )
 
-  // console.log(tweets)
-
   const splitedTweets = []
-  const chunkSize = 4
+  const chunkSize = 10
   for (let i = 0; i < tweets.length; i += chunkSize) {
     const chunk = tweets.slice(i, i + chunkSize)
     splitedTweets.push(chunk)
   }
 
-  if (page > splitedTweets.length)
+  if (page < splitedTweets.length)
     return NextResponse.json(
-      { tweets: splitedTweets[splitedTweets.length] },
+      {
+        payload: [...splitedTweets[page]],
+        lastPage: splitedTweets.length - 1,
+      },
       { status: 200 }
     )
-  return NextResponse.json([...splitedTweets[page]], { status: 200 })
-  // return NextResponse.json(
-  //   {
-  //     tweets: splitedTweets[page],
-  //     nextPage: page + 1 > splitedTweets.length ? null : page + 1,
-  //     pages: splitedTweets.length,
-  //   },
-  //   { status: 200 }
-  // )
+  return NextResponse.json({ message: "Page doesn't exist" }, { status: 400 })
 }

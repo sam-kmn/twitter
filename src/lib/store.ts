@@ -2,11 +2,10 @@ import { create } from "zustand"
 
 interface TweetStore {
   data: any[]
-  page: number
-  lastPage: boolean
+  nextPage: number
+  lastPage: number | undefined
   isLoading: boolean
-  nextPage: () => void
-  fetchDataPacket: () => void
+  fetchPage: () => void
   addTweet: (data: Tweet) => void
 }
 
@@ -28,8 +27,8 @@ type Tweet = {
 
 export const useTweets = create<TweetStore>((set, get) => ({
   data: [],
-  page: 0,
-  lastPage: false,
+  nextPage: 0,
+  lastPage: undefined,
   isLoading: false,
 
   addTweet: (tweet) => {
@@ -38,34 +37,25 @@ export const useTweets = create<TweetStore>((set, get) => ({
     })
   },
 
-  nextPage: async () => {
-    if (get().lastPage) return
+  fetchPage: async () => {
+    if (get().lastPage != undefined && get().nextPage > get().lastPage)
+      return console.warn("You are already at last page!")
     try {
       set({ isLoading: true })
-      const resposne = await fetch(`/api/tweets/explore?page=${get().page}`)
-      const tweetPack = await resposne.json()
-      console.log("fetch page", get().page)
+      const resposne = await (
+        await fetch(`/api/tweets/explore?page=${get().nextPage}`)
+      ).json()
+
+      // console.log("store.fetchPage() ", get().nextPage)
       set({
-        data: [...get().data, tweetPack],
-        page: get().page + 1,
+        data: [...get().data, resposne.payload],
+        nextPage: get().nextPage + 1,
+        lastPage: resposne.lastPage,
       })
     } catch (error) {
-      set({ lastPage: true })
-      console.log("Page dosnt exist!")
+      console.warn("Page dosnt exist!")
     } finally {
       set({ isLoading: false })
     }
-  },
-  // increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  // removeAllBears: () => set({ bears: 0 }),
-  fetchDataPacket: async () => {
-    set({ isLoading: true })
-    const resposne = await fetch(`/api/tweets/explore?page=${get().page}`)
-    const tweetPack = await resposne.json()
-    console.log(get().page)
-    set({
-      data: [...get().data, tweetPack],
-    })
-    set({ isLoading: false })
   },
 }))
